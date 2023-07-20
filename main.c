@@ -48,7 +48,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "stm32f103xb.h"                  // Primary CMSIS header file
-#include "STM32F103-Pause-lib.c"          // Library for pause and delay_us functions
 
 #include "STM32F103-CMSIS-I2C-LCD-lib.c"  // I2C LCD driver library
 #include "STM32F103-CMSIS-AHT10-lib.c"    // AHT10 sensor library
