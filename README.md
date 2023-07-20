@@ -1,6 +1,6 @@
-# STM32F103-CMSIS-I2C-LCD-AHT10
-Sample project using a Blue Pill (STM32F103) a 16x2 LCD display driven by an I2C LCD driver module, and an AHT10
-temperature and humidity sensor module.
+# STM32F103-CMSIS-I2C-LCD-AHT10-lib
+Library to read the AHT10 I2C temperature and humidity sensor. Includes a sample project that reads the sensor
+and displays the temperature, humidity, temperature index, and English phrases. to an I2C-driven 16x2 LCD module.
 <br><br>
 The I2C LCD Driver Module is hooked up to the I2C1 port (pins B6/B7) and the AHT10 sensor module is
 hooked up to I2C2 (pins B10/B11).
