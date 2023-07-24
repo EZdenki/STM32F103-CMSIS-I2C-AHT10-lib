@@ -134,7 +134,7 @@ main()
   delay_us( 2e3 );
   I2C_LCD_cmd( LCD_HOME );          // Set the LCD to the home position
 
-  AHT10_init( I2C1 );               // Initialize AHT10 sensor, set sensor to I2C2
+  AHT10_init( I2C2 );               // Initialize AHT10 sensor, set sensor to I2C2
 
 
   while ( 1 )                           // Repeat this block forever
