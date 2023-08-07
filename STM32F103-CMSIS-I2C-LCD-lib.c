@@ -57,6 +57,7 @@
 #include <string.h>
 #include "stm32f103xb.h"              // Primary CMSIS header file
 #include "STM32F103-CMSIS-I2C-lib.c"
+#include "STM32F103-Delay-lib.c"
 
 I2C_TypeDef *LCD_I2C;                 // Global variable to point to the I2C interface used for
                                       // the LCD driver.
@@ -98,14 +99,14 @@ I2C_TypeDef *LCD_I2C;                 // Global variable to point to the I2C int
 // Then there is a 20 ms wait time to give the display module time to fully power up. Then the
 // command is sent to set the LCD module into the 4-bit mode.
 void
-I2C_LCD_init( I2C_TypeDef *thisI2C )
+I2C_LCD_init( I2C_TypeDef *thisI2C, uint32_t i2cSpeed )
 {
   LCD_I2C = thisI2C;    // Set Global LCD_I2C interface to I2C1 or I2C2
 
   uint8_t LCD_data;
 
 
-  I2C_init( LCD_I2C );
+  I2C_init( LCD_I2C, i2cSpeed );
   delay_us( 20000 );
 
   // Send initial 4-bit command

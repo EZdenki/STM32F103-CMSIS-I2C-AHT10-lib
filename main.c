@@ -1,15 +1,16 @@
 //  STM32F103-CMSIS-I2C-LCD-AHT10
-//      Version 1.0   07/19/2023    Updated Comments and core files
+//      Version 1.1   7 Aug 2023    Updated to use updated Delay-lib and I2C-lib
+//      Version 1.0   19 Jul 2023   Updated Comments and core files
+//      Started       May 2023
 //
 //  Target Microcontroller: STM32F103 (Blue Pill)
-//  Mike Shegedin, 05/2023
 //
 //  Reads in temperature and humidity data from an AHT10 I2C temperature and humidity sensor,
 //  and displays this data along with comfort level phrases to an I2C-driven LCD module.
 //
 //  Target I2C devices:
-//    I2C2: AHT10 Temperature and Humidity Module
-//    I2C1: 16x2 LCD Driver Module based on the PCF8574.
+//    I2C1: AHT10 Temperature and Humidity Module
+//    I2C2: 16x2 LCD Driver Module based on the PCF8574.
 //
 // ================================================================== 
 //     ***  HARDWARE SETUP  ***
@@ -51,7 +52,7 @@
 
 #include "STM32F103-CMSIS-I2C-LCD-lib.c"  // I2C LCD driver library
 #include "STM32F103-CMSIS-AHT10-lib.c"    // AHT10 sensor library
-
+#include "STM32F103-Delay-lib.c"
 
 //  float
 //  heatIndex( float tempC, float humid )
@@ -122,37 +123,23 @@ outFuzzyHeatIndex( int temp )
 int
 main()
 {
-  uint8_t  ahtStatus;               // Status byte returned from the sensor
   char     myString[16];            // Will hold printable strings
   int16_t  temp100, humid100;       // Used in conversion from raw to real data
   float    rTemp, rHumid, heatIdx;  // Used to pass values to/from heat index routine
 
-  I2C_LCD_init( I2C2 );             // Set the LCD interface to I2C1 and initialize it
+  I2C_LCD_init( I2C2, 100e3 );      // Set the LCD interface to I2C2 at 100 kHz
   I2C_LCD_cmd( LCD_4B_58F_2L );     // Get LCD into 4-bit mode
   I2C_LCD_cmd( LCD_ON_NO_CURSOR );  // LCD ON, Cursor OFF
   I2C_LCD_cmd( LCD_CLEAR );         // Clear the LCD screen
   delay_us( 2e3 );
   I2C_LCD_cmd( LCD_HOME );          // Set the LCD to the home position
-
-  AHT10_init( I2C2 );               // Initialize AHT10 sensor, set sensor to I2C2
-
+  AHT10_init( I2C1, 100e3 );        // Set the AHT10 sensor to I2C1 at 100 kHz
 
   while ( 1 )                           // Repeat this block forever
   {
     //AHT10_readSensorData( gotData );  // Get data from sensor
-    ahtStatus = AHT10_getTempHumid100( &temp100, &humid100  );
+    AHT10_getTempHumid100( &temp100, &humid100  );
     
-    // Display Heartbeat Character
-    I2C_LCD_cmd( LCD_1ST_LINE + 15 );   // Position LCD to the end of the 1st line
-    
-    if( ahtStatus == 0x19 )             // Display heartbeat
-      I2C_LCD_putc( 0xA5 );             // Display center dot to indicate normal operation 
-    else
-      I2C_LCD_putc( 'E' );              // Display E to indicate error
-      
-    delay_us( 400e3 );                  // Show heartbeat sign for 400 ms
-    I2C_LCD_putc( 0x08 );               // Backspace to clear heartbeat character
-
     // Separate out humidity and temperature data
     i100toa( temp100, myString );       // Convert x100 value to readable string with one
                                         // decimal place.

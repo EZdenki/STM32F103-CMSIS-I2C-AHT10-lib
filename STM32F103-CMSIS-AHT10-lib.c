@@ -66,7 +66,7 @@
 
 #include "stm32f103xb.h"              // Primary CMSIS header file
 #include "STM32F103-CMSIS-I2C-lib.c"  // I2C library
-#include "STM32F103-Pause-lib.c"      // pause and delay_us library
+#include "STM32F103-Delay-lib.c"      // pause and delay_us library
 
 I2C_TypeDef *AHT10_I2C;               // Global variable to point to the I2C interface used for
                                       // the I2C AHT10 routines. 
@@ -88,11 +88,11 @@ I2C_TypeDef *AHT10_I2C;               // Global variable to point to the I2C int
 //  Initialize the specified I2C interface and associate that interface with the subsequent
 //  AHT10_ routines. Then initializes the AHT10 unit to its default calibrated values.
 void
-AHT10_init( I2C_TypeDef *thisI2C )
+AHT10_init( I2C_TypeDef *thisI2C, uint32_t i2cSpeed )
 {
   AHT10_I2C = thisI2C;                       // Associate AHT10_ routines with this I2C interface
 
-  I2C_init(    AHT10_I2C );                  // Initialize this I2C2 interface
+  I2C_init(    AHT10_I2C, i2cSpeed );                  // Initialize this I2C2 interface
   I2C_start(   AHT10_I2C );                  // I2C start
   I2C_address( AHT10_I2C, AHT10_ADD, 0  );   // Send address as a "write" command
   I2C_write(   AHT10_I2C, AHT10_INIT    );   // 0xE1: Init command
