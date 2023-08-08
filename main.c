@@ -1,5 +1,5 @@
 //  STM32F103-CMSIS-I2C-LCD-AHT10
-//      Version 1.1   7 Aug 2023    Updated to use updated Delay-lib and I2C-lib
+//      Version 1.1   8 Aug 2023    Updated to use updated Delay-lib, I2C-lib, and I2C-LCD-lib
 //      Version 1.0   19 Jul 2023   Updated Comments and core files
 //      Started       May 2023
 //
@@ -52,7 +52,8 @@
 
 #include "STM32F103-CMSIS-I2C-LCD-lib.c"  // I2C LCD driver library
 #include "STM32F103-CMSIS-AHT10-lib.c"    // AHT10 sensor library
-#include "STM32F103-Delay-lib.c"
+#include "STM32F103-Delay-lib.c"          // For microsecond delay routine
+
 
 //  float
 //  heatIndex( float tempC, float humid )
@@ -170,14 +171,15 @@ main()
     I2C_LCD_puts( myString );
     I2C_LCD_putc( 0xDF );
 
-    delay_us( 5e6 );                    // Pause approx. 1:0 s between measurements. Excessive
-                                        // measurements can lead to self-heating of the sensor.
+    delay_us( 4e6 );                    // Pause approx. 8 s between measurements. (4 s here
+                                        // and 4 s below. ) Excessive measurements can lead
+                                        // to self-heating of the sensor.
     I2C_LCD_cmd( LCD_2ND_LINE );
     I2C_LCD_puts( "   " );
     outFuzzyHeatIndex( heatIdx );
     I2C_LCD_puts( "   " );
 
-    delay_us( 5e6 );
+    delay_us( 4e6 );
   }
   return 1;
 }
