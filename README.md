@@ -1,9 +1,10 @@
 # STM32F103-CMSIS-I2C-AHT10-lib
 ### Library to Initialize and Read the AHT10 I2C Temperature and Humidity Sensor
 ### The STM32F103-CMSIS-I2C-AHT10-lib.c library supports the following routines:
-+ ```void AHT10_init( I2C_TypeDef *this I2C )```<br>
-  Initializes the specified I2C interface and associates that interface with the AHT10_ routines.
-  Then initializes the AHT10 sensor to its default calibrated values.
++ ```void AHT10_init( I2C_TypeDef *this I2C, uint32_t I2CSpeed )```<br>
+  Initializes the specified I2C interface and associates that interface with the
+  AHT10_ routines. Also sets the I2C speed in kHz for this device. Then initializes
+  the AHT10 sensor to its default calibrated values.
 + ```void AHT10_readSensorData( uint8_t *data )```<br>
   Reads in the status register and raw temperature and humidity data from the sensor, and places that data into the data array.
 + ```uint8_t AHT10_getTempHumid100( int16_t *temp100, int16_t *humid100 )```<br>
